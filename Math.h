@@ -87,6 +87,7 @@ inline Radians atanhr(Real x) { return atanh(x); }
 namespace Math
 {
 	const Radians PI = Radians(M_PI);
+	const Radians Circle = PI * 2.0;
 }
 
 #endif /* _MATH_H_ */
