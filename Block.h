@@ -17,7 +17,7 @@ private:
 public:
 	Block(const Rect& rect, Degrees rotation = 0.0);
 	
-	virtual void draw() const;
+	virtual void render(uint64_t frame);
 	
 	Color color() const { return mColor; }
 	void setColor(const Color& col) { mColor = col; }

@@ -12,27 +12,22 @@ Block::Block(const Rect& rect, Degrees rotation) :
 	
 }
 
-void Block::draw() const
+void Block::render(uint64_t frame)
 {
 	glTranslatef(mRect.origin.x, mRect.origin.y, 0.0);
 	glRotatef(mRotation, 0.0, 0.0, 1.0);
 
+	mColor.set();
+
 	if (mTexture)
 	{
 		glEnable(GL_TEXTURE_2D);
-		glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, (GLfloat[]){1.0, 1.0, 1.0, 1.0});
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mColor.transformed());
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glBindTexture(GL_TEXTURE_2D, mTexture->name());
 		
 		glMatrixMode(GL_TEXTURE);
-#if 0
-		glPushMatrix();
-		glLoadIdentity();
-		glTranslatef(0.5, 0.5, 0.0);
-		glRotatef(mRotation, 0.0, 0.0, 1.0);
-		glTranslatef(-0.5, -0.5, 0.0);
-#endif
-		
+	
 		glBegin(GL_QUADS);
 		{
 			// bottom left
@@ -53,14 +48,9 @@ void Block::draw() const
 		}
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-
-#if 0
-		glPopMatrix();
-#endif
 	}
 	else
 	{
-		mColor.set();
 		glBegin(GL_QUADS);
 		{
 			glVertex2f(0.0, 0.0);
