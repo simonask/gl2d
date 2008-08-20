@@ -23,7 +23,7 @@ public:
 	inline Real width() const { return mRect.size.x; }
 	inline Real height() const { return mRect.size.y; }
 	
-	void draw() const;
+	void render(uint64_t);
 	bool handleEvent(const SDL_Event& event);
 	Rect boundingRect() const { return mRect; }
 	

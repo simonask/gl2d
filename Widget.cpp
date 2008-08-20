@@ -10,7 +10,7 @@ Widget::Widget(const Rect& rect) :
 {
 }
 
-void Widget::draw() const
+void Widget::render(uint64_t frame)
 {
 	Point worldPos = Game::screenToWorldCoord(mRect.origin);
 	glTranslatef(worldPos.x, worldPos.y, 0);
