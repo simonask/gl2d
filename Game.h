@@ -2,7 +2,6 @@
 #define _APPLICATION_H_
 
 #include "EventListener.h"
-#include "Layer.h"
 #include "Point.h"
 
 #include <SDL/SDL.h>
@@ -17,15 +16,20 @@ private:
 	static bool done;
 	static float fps;
 	static std::vector<EventListener*> mListeners;
-	static std::vector<Layer*> mLayers;
 	static Point mCameraPosition;
 	
 	static void handleEvents();
-	static void draw();
+	static void update();
+	static void renderPass(uint64_t frame);
+	static void render();
 	static void calculateFps();
 public:
+	// TODO: Put these in EventListener as statics
 	static void registerEventListener(EventListener* object);
 	static void unregisterEventListener(EventListener* object);
+	
+	static uint64_t currentFrame();
+	static uint64_t framerate();
 
 	inline static Point cameraPosition() { return mCameraPosition; }
 	static void setCameraPosition(const Point& point, bool smooth = true);

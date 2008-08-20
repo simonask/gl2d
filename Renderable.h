@@ -2,23 +2,41 @@
 #define _RENDERABLE_H_
 
 #include <OpenGL/gl.h>
+#include <vector>
 
 #include "Rect.h"
 
 #define DRAW_BOUNDING_BOXES 1
 
+class Renderable;
+typedef std::vector<Renderable*> Renderables;
+
 class Renderable
 {
+private:
+	int mLayer;
+	Real mZIndex;
+	bool mHidden;
 public:
+	static Renderables all();
+	
+	Renderable();
+	virtual ~Renderable();
+	
 	/*
-		Renders the object to screen. This is declared const, because it
-		may be called any number of times in a rendering pass, so it should
-		not modify the state of the object.
+		Renders the object to screen.
+		
+		frame is given to enable the Renderable to handle accumulation effects
+		such as motion blur by either calculating the state from the frame
+		number or save previous states for re-rendering.
+		
+		It can be determined if render() is being called in an accumulation
+		pass by comparing frame to Game::currentFrame().
 		
 		This function is only called if the object is determined to be on
 		screen. This is determined by the result of boundingRect().
 	*/
-	virtual void draw() const = 0;
+	virtual void render(uint64_t frame) = 0;
 	
 	/*
 		Return a rectangle that is guaranteed to contain this object. This
@@ -36,6 +54,15 @@ public:
 		thus, whether it should be updated.
 	*/
 	virtual void update() {}
+	
+	inline int layer() const { return mLayer; }
+	inline void setLayer(int l) { mLayer = l; }
+	inline Real zIndex() const { return mZIndex; }
+	inline void setZIndex(Real z) { mZIndex = z; }
+	inline bool hidden() const { return mHidden; }
+	inline void setHidden(bool h) { mHidden = h; }
+	inline void show() { mHidden = false; }
+	inline void hide() { mHidden = true; }
 };
 
 #endif /* _RENDERABLE_H_ */
