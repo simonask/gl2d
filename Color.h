@@ -16,15 +16,44 @@ struct Color
 		r = _r; g = _g; b = _b; a = _a;
 	}
 	
-	void set() const
+	static const Color id;
+	static Color matrix;
+	
+	inline void set() const
 	{
-		glColor4f(r, g, b, a);
+		glColor4f(r * matrix.r, g * matrix.g, b * matrix.b, a * matrix.a);
 	}
 	
 	inline operator const GLfloat*() const
 	{
 		return colors;
 	}
+	
+	inline Color transformed() const
+	{
+		return Color(r * matrix.r, g * matrix.g, b * matrix.b, a * matrix.a);
+	}
+	
+	inline static void load(const Color& color)
+	{
+		matrix = color;
+	}
+		
+	inline static void translate(const Color& color)
+	{
+		matrix.r *= color.r;
+		matrix.g *= color.g;
+		matrix.b *= color.b;
+		matrix.a *= color.a;
+	}
+	
+	inline static void loadIdentity()
+	{
+		matrix = id;
+	}
+	
+	static void push();
+	static void pop();
 };
 
 #endif /* _COLOR_H_ */
