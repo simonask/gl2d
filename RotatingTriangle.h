@@ -3,16 +3,19 @@
 
 #include "Renderable.h"
 #include "EventListener.h"
+#include "Accumulator.h"
 
 class RotatingTriangle : public Renderable, public EventListener
 {
 private:
-	float x, y;
-	int rotation;
+	struct State {
+		float x, y;
+	};
+	State state;
+	Accumulator<RotatingTriangle::State> accumulator;
 public:
-	explicit RotatingTriangle() : x(0), y(0), rotation(0), EventListener(SDL_MOUSEMOTIONMASK) {}
-	virtual void draw() const;
-	void update();
+	explicit RotatingTriangle();
+	virtual void render(uint64_t frame);
 	bool handleEvent(const SDL_Event&);
 	Rect boundingRect() const;
 };
