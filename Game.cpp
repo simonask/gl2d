@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "Block.h"
 #include "Streamy.h"
+#include "Background.h"
 
 #include <iostream>
 
@@ -23,7 +24,11 @@ bool Game::done = false;
 float Game::fps = 0.0;
 vector<EventListener*> Game::mListeners;
 static Point mMousePosition(0, 0);
-Point Game::mCameraPosition(0, 0);
+Vector Game::mScreenSize(1024, 768);
+Vector Game::mWorldSize(10000, 10000);
+
+Point Game::mCameraPosition(Game::mScreenSize.width / 2, Game::mScreenSize.height / 2);
+
 
 static RotatingTriangle* triangle;
 static Widget* widget;
@@ -153,7 +158,7 @@ void Game::update()
 
 void Game::renderPass(uint64_t frame)
 {	
-	const Rect cameraRect(mCameraPosition, Vector(screen->w, screen->h));
+	const Rect cameraRect(mCameraPosition - (mScreenSize / 2), mScreenSize);
 	
 	Renderables renderables = Renderable::all();
 	
@@ -185,7 +190,8 @@ void Game::render()
 {
 	glPushMatrix();
 	// Camera.
-	glTranslatef(-mCameraPosition.x, -mCameraPosition.y, -1.0);
+	
+	glTranslatef(-(mCameraPosition.x - (mScreenSize.width / 2)), -(mCameraPosition.y - (mScreenSize.height / 2)), 0.0);
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	renderPass(frames);
@@ -276,12 +282,13 @@ int Game::run(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 8);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	
-	screen = SDL_SetVideoMode(800, 600, 0, SDL_OPENGL);
+	screen = SDL_SetVideoMode(mScreenSize.width, mScreenSize.height, 0, SDL_OPENGL);
 	SDL_WM_SetCaption("gl2d", "gl2d");
 	SDL_EnableUNICODE(1);
 	
 	glViewport(0, 0, screen->w, screen->h);
-	glFrustum(0.0, screen->w, screen->h, 0.0, 1.0, 100.0);
+	glFrustum(0.0, screen->w, screen->h, 0.0, 300.0, 500.0);
+	glTranslatef(0.0, 0.0, -300.0);
 	
 	glClearColor(0.0, 0.0, 0.0, 0.0);	
 	
@@ -290,9 +297,12 @@ int Game::run(int argc, char* argv[])
 	
 	glEnable(GL_MULTISAMPLE_ARB);
 	
-//	glEnable(GL_DEPTH_TEST);
-	
 	/* ALL CLEAR -- START HAVING FUN */
+	Background bg;
+	bg.setZIndex(-100.0);
+	bg.setTexture(Texture::fromFile("heineken.jpg"));
+	
+	
 	triangle = new RotatingTriangle;
 	triangle->setZIndex(-1.0);
 	widget = new Button;

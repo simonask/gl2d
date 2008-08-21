@@ -3,6 +3,7 @@
 
 #include "EventListener.h"
 #include "Point.h"
+#include "Vector.h"
 
 #include <SDL/SDL.h>
 #include <vector>
@@ -17,6 +18,8 @@ private:
 	static float fps;
 	static std::vector<EventListener*> mListeners;
 	static Point mCameraPosition;
+	static Vector mScreenSize;
+	static Vector mWorldSize;
 	
 	static void handleEvents();
 	static void update();
@@ -34,8 +37,11 @@ public:
 	inline static Point cameraPosition() { return mCameraPosition; }
 	static void setCameraPosition(const Point& point, bool smooth = true);
 	
-	inline static Point screenToWorldCoord(const Point& p) { return p + mCameraPosition; }
-	inline static Point worldToScreenCoord(const Point& p) { return p - mCameraPosition; }
+	inline static Vector screenSize() { return mScreenSize; }
+	inline static Vector worldSize() { return mWorldSize; }
+	
+	inline static Point screenToWorldCoord(const Point& p) { return p - mScreenSize/2 + mCameraPosition; }
+	inline static Point worldToScreenCoord(const Point& p) { return p + mScreenSize/2 - mCameraPosition; }
 	
 	static int run(int argc, char* argv[]);
 };
