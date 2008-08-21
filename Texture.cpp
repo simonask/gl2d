@@ -26,8 +26,20 @@ void Texture::generate()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	
+	switch (mImage->format->BytesPerPixel)
+	{
+		default:
+			cerr << "WARNING: Unknown pixel format (" << mImage->format->BytesPerPixel << " bytes per pixel) -- using RGB." << endl;
+		case 3:
+			mFormat = GL_RGB;
+			break;
+		case 4:
+			mFormat = GL_RGBA;
+			break;
+	}
+	
 	GLenum error;
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 4, mImage->w, mImage->h, GL_RGBA, GL_UNSIGNED_BYTE, mImage->pixels);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 4, mImage->w, mImage->h, mFormat, GL_UNSIGNED_BYTE, mImage->pixels);
 	if (error = glGetError())
 		cerr << "Could not generate texture! OpenGL error " << error << endl;
 }
