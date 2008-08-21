@@ -46,7 +46,7 @@ bool RotatingTriangle::handleEvent(const SDL_Event& event)
 Rect RotatingTriangle::boundingRect() const
 {
 	Rect r;
-	r.origin = Point(state.x - SIZE, state.y - SIZE);
+	r.origin = Game::screenToWorldCoord(Point(state.x - SIZE, state.y - SIZE));
 	r.size = Vector(2 * SIZE, 2 * SIZE);
 	return r;
 }
