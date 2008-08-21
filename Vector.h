@@ -17,6 +17,8 @@ struct VectorT : public PointT<T>
 		double l = length();
 		return VectorT<T>(this->x / l, this->y / l);
 	}
+	
+	inline VectorT<T> operator/(T other) const { return VectorT<T>(this->x / other, this->y / other); }
 };
 
 typedef VectorT<Real> Vector;
