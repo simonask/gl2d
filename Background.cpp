@@ -18,8 +18,7 @@ void Background::render(uint64_t frames)
 	
 	glBegin(GL_QUADS);
 	{
-		Vector size = Game::screenSize();
-		Point bottomright = Game::screenToWorldCoord(size);
+		Vector bottomright = Game::screenSize();
 		
 		// bottom left
 		glTexCoord2f(0.0, 1.0);
