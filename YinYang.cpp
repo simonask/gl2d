@@ -13,7 +13,7 @@ void drawCircle(GLenum polygonType, Point center, Real radius, int segments = 0,
 		{
 			Real x = cos((Real)arcOffset + (Real)arc / segments * i) * radius;
 			Real y = sin((Real)arcOffset + (Real)arc / segments * i) * radius;
-			glVertex2f(x, y);
+			glVertex3f(x, y, 0);
 		}
 	}
 	glEnd();
@@ -26,8 +26,8 @@ void YinYang::render(uint64_t frame)
 	Degrees stepSize = 360.0 / rotationPerFrame;
 	Degrees rotation = (frame % (uint64_t)stepSize) / stepSize * 360.0;
 
-	glTranslatef(mCenter.x, mCenter.y, 0.0);
-	glRotatef(rotation, 0, 0, 1);
+	glTranslatef(mCenter.x, mCenter.y, -mRadius * 2);
+	glRotatef(rotation, 0.1, 0.1, 1);
 	
 	
 	// Half cirlces
