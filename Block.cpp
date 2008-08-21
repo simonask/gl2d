@@ -25,8 +25,6 @@ void Block::render(uint64_t frame)
 		glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, mColor.transformed());
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glBindTexture(GL_TEXTURE_2D, mTexture->name());
-		
-		glMatrixMode(GL_TEXTURE);
 	
 		glBegin(GL_QUADS);
 		{
