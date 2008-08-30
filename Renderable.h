@@ -16,7 +16,7 @@ private:
 	Real mZIndex;
 	bool mHidden;
 public:
-	static Renderables all();
+	static const Renderables& all();
 	
 	Renderable();
 	virtual ~Renderable();

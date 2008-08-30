@@ -12,7 +12,7 @@ bool compareRenderables(const Renderable* left, const Renderable* right)
 	return left->layer() <= right->layer() && left->zIndex() <= right->zIndex();
 }
 
-Renderables Renderable::all()
+const Renderables& Renderable::all()
 {
 	if (somethingAddedSinceLastSort)
 	{
