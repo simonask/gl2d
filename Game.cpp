@@ -6,6 +6,7 @@
 #include "Block.h"
 #include "Streamy.h"
 #include "Background.h"
+#include "Navigator.h"
 
 #include <iostream>
 
@@ -320,6 +321,9 @@ int Game::run(int argc, char* argv[])
 	Block* b2 = new Block(Rect(200, 200, 100, 20), 15);
 	
 	YinYang* yy = new YinYang(Point(500, 500), 24);
+	
+	Navigator nav;
+	nav.setHeight(100);
 	
 	/* GAME LOOP */
 	while (!done)
