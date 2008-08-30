@@ -49,6 +49,11 @@ bool Widget::handleEvent(const SDL_Event& event)
 				mMouseOver = false;
 				mouseOut(event.motion);
 			}
+			
+			if (mMouseOver || mMouseDown)
+			{
+				mouseMove(event.motion);
+			}
 			return false;
 			break;
 		}
