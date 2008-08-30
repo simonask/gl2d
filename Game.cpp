@@ -101,6 +101,7 @@ void Game::handleEvents()
 		// Some basic event handling that needs to be done regardless
 		case SDL_MOUSEMOTION:
 			mMousePosition = Point(event.motion.x, event.motion.y);
+			mMouseMovedInThisFrame = true;
 			break;
 		case SDL_QUIT:
 			done = true;
@@ -247,25 +248,43 @@ void Game::calculateFps()
 	++frames_since_last_update;
 }
 
-void Game::setCameraPosition(const Point& pos, bool smooth)
+void Game::setCameraPosition(const Point& newPos, bool smooth)
 {
 	Point oldPos = mCameraPosition;
+	
+	// Limit camera to the world
+	Point pos(newPos);
+	if (pos.x < mScreenSize.width / 2.0)
+		pos.x = mScreenSize.width / 2.0;
+	else if (pos.x > mWorldSize.width - mScreenSize.width / 2.0)
+		pos.x = mWorldSize.width - mScreenSize.width / 2.0;
+	if (pos.y < mScreenSize.height / 2.0)
+		pos.y = mScreenSize.height / 2.0;
+	else if (pos.y > mWorldSize.height - mScreenSize.height / 2.0)
+		pos.y = mWorldSize.height - mScreenSize.height / 2.0;
 	
 	// TODO: Smooth movement.
 	mCameraPosition = pos;
 	
-	Point diff = mCameraPosition - oldPos;
-	
-	// Send out MouseMotion event, because the world has moved under the mouse.
-	SDL_Event event;
-	event.type = SDL_MOUSEMOTION;
-	event.motion.x = (Uint16)mMousePosition.x;
-	event.motion.y = (Uint16)mMousePosition.y;
-	event.motion.xrel = 0;
-	event.motion.yrel = 0;
-	event.motion.which = 0;
-	event.motion.state = 1;
-	SDL_PushEvent(&event);
+	if (!mMouseMovedInThisFrame) // avoid piling up MouseMotion events when the camera is moved as a result of mouse movement
+	{
+		// Send out MouseMotion event, because the world has moved under the mouse.
+		SDL_Event event;
+		event.type = SDL_MOUSEMOTION;
+		event.motion.x = (Uint16)mMousePosition.x;
+		event.motion.y = (Uint16)mMousePosition.y;
+		event.motion.xrel = 0;
+		event.motion.yrel = 0;
+		event.motion.which = 0;
+		event.motion.state = 1;
+		SDL_PushEvent(&event);
+		mMouseMovedInThisFrame = true;
+	}
+}
+
+Point Game::mousePosition()
+{
+	return mMousePosition;
 }
 
 int Game::run(int argc, char* argv[])

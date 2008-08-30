@@ -16,7 +16,6 @@ private:
 	
 	static bool done;
 	static float fps;
-	static std::vector<EventListener*> mListeners;
 	static Point mCameraPosition;
 	static Vector mScreenSize;
 	static Vector mWorldSize;
@@ -27,15 +26,14 @@ private:
 	static void render();
 	static void calculateFps();
 public:
-	// TODO: Put these in EventListener as statics
-	static void registerEventListener(EventListener* object);
-	static void unregisterEventListener(EventListener* object);
 	
 	static uint64_t currentFrame();
 	static uint64_t framerate();
 
 	inline static Point cameraPosition() { return mCameraPosition; }
 	static void setCameraPosition(const Point& point, bool smooth = true);
+	
+	static Point mousePosition();
 	
 	inline static Vector screenSize() { return mScreenSize; }
 	inline static Vector worldSize() { return mWorldSize; }
