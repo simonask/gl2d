@@ -1,4 +1,4 @@
-#include "Math.h"
+#include "GeometryMath.h"
 
 Radians::Radians(const Degrees& deg) : Angle(deg.toRadians()) {}
 Degrees Radians::toDegrees() const { return Degrees((value / (2*M_PI)) * 360); }

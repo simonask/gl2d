@@ -3,6 +3,6 @@
 
 typedef double Real;
 
-#include "Math.h"
+#include "GeometryMath.h"
 
 #endif /* _BASIC_H_ */

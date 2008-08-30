@@ -2,7 +2,7 @@
 #define _MATH_H_
 
 #include "Basic.h"
-#include "math.h"
+#include <math.h>
 
 struct Degrees;
 struct Radians;

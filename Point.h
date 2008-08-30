@@ -2,7 +2,7 @@
 #define _POINT_H_
 
 #include "Basic.h"
-#include "Math.h"
+#include "GeometryMath.h"
 #include <iostream>
 using namespace std;
 
