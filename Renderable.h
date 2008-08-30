@@ -6,8 +6,6 @@
 
 #include "Rect.h"
 
-#define DRAW_BOUNDING_BOXES 1
-
 class Renderable;
 typedef std::vector<Renderable*> Renderables;
 

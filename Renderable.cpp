@@ -1,5 +1,6 @@
 #include "Renderable.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ bool compareRenderables(const Renderable* left, const Renderable* right)
 	return left->layer() <= right->layer() && left->zIndex() <= right->zIndex();
 }
 
-vector<Renderable*> Renderable::all()
+Renderables Renderable::all()
 {
 	if (somethingAddedSinceLastSort)
 	{
