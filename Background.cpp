@@ -1,6 +1,7 @@
 #include "Background.h"
 #include "Game.h"
 #include "Color.h"
+#include "Streamy.h"
 
 Background::Background() : mTexture(NULL)
 {
@@ -10,30 +11,34 @@ Background::Background() : mTexture(NULL)
 void Background::render(uint64_t frames)
 {
 	Point topleft = Game::screenToWorldCoord(Point(0.0, 0.0));
+	Point bottomright = Game::screenSize();
+	
 	glTranslatef(topleft.x, topleft.y, 0.0);
+	
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, Color(1.0, 1.0, 1.0, mAlpha).transformed());
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glBindTexture(GL_TEXTURE_2D, mTexture->name());
 	
+	Point t1 = Point(topleft.x / Game::worldSize().width, topleft.y / Game::worldSize().height);
+	Point t2 = t1 + Point(mClipSize.x / mTexture->size().width, mClipSize.y / mTexture->size().height);
+	
 	glBegin(GL_QUADS);
 	{
-		Vector bottomright = Game::screenSize();
-		
 		// bottom left
-		glTexCoord2f(0.0, 1.0);
-		glVertex2f(0.0, bottomright.height);
+		glTexCoord2f(t1.x, t2.y);
+		glVertex2f(0.0, bottomright.y);
 		
 		// bottom right
-		glTexCoord2f(1.0, 1.0);
-		glVertex2f(bottomright.width, bottomright.height);
+		glTexCoord2f(t2.x, t2.y);
+		glVertex2f(bottomright.x, bottomright.y);
 		
 		// top right
-		glTexCoord2f(1.0, 0.0);
-		glVertex2f(bottomright.width, 0.0);
+		glTexCoord2f(t2.x, t1.y);
+		glVertex2f(bottomright.x, 0.0);
 		
 		// top left
-		glTexCoord2f(0.0, 0.0);
+		glTexCoord2f(t1.x, t1.y);
 		glVertex2f(0.0, 0.0);
 	}
 	glEnd();
