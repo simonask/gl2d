@@ -11,10 +11,6 @@ std::ostream& operator<<(std::ostream& os, const PointT<T>& p)
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Angle& angle)
-{
-	os << angle.toRadians().value << " rad / " << angle.toDegrees().value << " deg";
-	return os;
-}
+std::ostream& operator<<(std::ostream& os, const Angle& angle);
 
 #endif /* _PRINTERS_H_ */
