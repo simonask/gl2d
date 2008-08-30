@@ -2,16 +2,26 @@
 #define _EVENTLISTENER_H_
 
 #include <SDL/SDL.h>
+#include <vector>
+
+class EventListener;
+
+typedef std::vector<EventListener*> EventListeners;
 
 class EventListener
 {
 private:
 	int mMask;
+	
+	static void registerEventListener(EventListener* self);
+	static void unregisterEventListener(EventListener* self);
 protected:
 	explicit EventListener(int mask);
 	EventListener(const EventListener&);
 	virtual ~EventListener();
 public:
+	static const EventListeners& all();
+	
 	/*
 		handleEvent is called anytime an event is fired that matches
 		this EventListener's eventMask.

@@ -22,10 +22,10 @@ static uint64_t frames = 0;     // at an fps of 50, this will overflow to 0 afte
 
 bool Game::done = false;
 float Game::fps = 0.0;
-vector<EventListener*> Game::mListeners;
 static Point mMousePosition(0, 0);
+static bool mMouseMovedInThisFrame = false;
 Vector Game::mScreenSize(1024, 768);
-Vector Game::mWorldSize(10000, 10000);
+Vector Game::mWorldSize(20000, 5000);
 
 Point Game::mCameraPosition(Game::mScreenSize.width / 2, Game::mScreenSize.height / 2);
 
@@ -33,20 +33,6 @@ Point Game::mCameraPosition(Game::mScreenSize.width / 2, Game::mScreenSize.heigh
 static RotatingTriangle* triangle;
 static Widget* widget;
 static bool drawBoundingBoxes = false;
-
-void Game::registerEventListener(EventListener* object)
-{
-	mListeners.push_back(object);
-}
-
-void Game::unregisterEventListener(EventListener* object)
-{
-	for (vector<EventListener*>::iterator iter = mListeners.begin(); iter != mListeners.end(); ++iter)
-	{
-		if (*iter == object)
-			mListeners.erase(iter);
-	}
-}
 
 static volatile bool isDrawing = false;
 static Block* drawingBlock = NULL;
@@ -122,8 +108,9 @@ void Game::handleEvents()
 		}
 		
 		bool eventWasHandled = false;
-		vector<EventListener*>::iterator iter = mListeners.begin();
-		while (!eventWasHandled && iter != mListeners.end())
+		EventListeners listeners = EventListener::all();
+		EventListeners::iterator iter = listeners.begin();
+		while (!eventWasHandled && iter != listeners.end())
 		{
 			if (SDL_EVENTMASK(event.type) & (*iter)->eventMask())
 				eventWasHandled = (*iter)->handleEvent(event);
