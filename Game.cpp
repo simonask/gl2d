@@ -307,6 +307,7 @@ int Game::run(int argc, char* argv[])
 	Background bg;
 	bg.setZIndex(-100.0);
 	bg.setTexture(Texture::fromFile("heineken.jpg"));
+	bg.setClipSize(Vector(400, 400));
 	
 	
 	triangle = new RotatingTriangle;
