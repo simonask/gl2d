@@ -14,10 +14,10 @@ void Widget::render(uint64_t frame)
 {
 	Point worldPos = Game::screenToWorldCoord(mRect.origin);
 	glTranslatef(worldPos.x, worldPos.y, 0);
-	drawWidget();
+	drawWidget(frame);
 }
 
-void Widget::drawWidget() const
+void Widget::drawWidget(uint64_t frame)
 {
 	// Dummy implementation
 	glBegin(GL_QUADS);

@@ -15,6 +15,7 @@ protected:
 	bool mMouseDown;
 public:
 	explicit Widget(const Rect&);
+	virtual ~Widget() {}
 	const Rect& rect() const { return mRect; }
 	Rect& rect() { return mRect; }
 	
@@ -25,11 +26,12 @@ public:
 	
 	void render(uint64_t);
 	bool handleEvent(const SDL_Event& event);
-	Rect boundingRect() const { return mRect; }
+	Rect boundingRect() const { return Rect(Game::screenToWorldCoord(mRect.origin), mRect.size); }
 	
-	virtual void drawWidget() const;
+	virtual void drawWidget(uint64_t);
 	virtual void mouseOver(const SDL_MouseMotionEvent&) {}
 	virtual void mouseOut(const SDL_MouseMotionEvent&) {}
+	virtual void mouseMove(const SDL_MouseMotionEvent&) {}
 	virtual void mouseDown(const SDL_MouseButtonEvent&) {}
 	virtual void mouseUp(const SDL_MouseButtonEvent&) {}
 };

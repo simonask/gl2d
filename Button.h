@@ -11,7 +11,7 @@ private:
 public:
 	explicit Button();
 	
-	virtual void drawWidget() const;
+	virtual void drawWidget(uint64_t);
 	
 	virtual void mouseOver(const SDL_MouseMotionEvent&);
 	virtual void mouseOut(const SDL_MouseMotionEvent&);

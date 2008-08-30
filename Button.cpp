@@ -10,7 +10,7 @@ Button::Button() :
 {
 }
 
-void Button::drawWidget() const
+void Button::drawWidget(uint64_t frame)
 {
 	glBegin(GL_QUADS);
 	{
