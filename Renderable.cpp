@@ -34,6 +34,9 @@ Renderable::~Renderable()
 	for (Renderables::iterator iter = renderables.begin(); iter != renderables.end(); ++iter)
 	{
 		if (*iter == this)
+		{
 			renderables.erase(iter);
+			break;
+		}
 	}
 }
