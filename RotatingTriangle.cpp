@@ -16,7 +16,8 @@ void RotatingTriangle::render(uint64_t frame)
 //	accumulator.restore(state, frame);
 	
 	glMatrixMode(GL_MODELVIEW);
-	glTranslatef(state.x, state.y, 0.0);
+	Point p = Game::screenToWorldCoord(Game::mousePosition());
+	glTranslatef(p.x, p.y, 0.0);
 	
 	Real stepsize = 360.0 / 5.0;
 	Degrees rotation = (frame % (uint64_t)stepsize) / stepsize * 360.0;
@@ -35,10 +36,10 @@ bool RotatingTriangle::handleEvent(const SDL_Event& event)
 {
 	if (event.type == SDL_MOUSEMOTION)
 	{
-		Point screenCoord(event.motion.x, event.motion.y);
+/*		Point screenCoord(event.motion.x, event.motion.y);
 		Point worldCoord = Game::screenToWorldCoord(screenCoord);
 		state.x = worldCoord.x;
-		state.y = worldCoord.y;
+		state.y = worldCoord.y;*/
 	}
 	return false;
 }
@@ -46,7 +47,7 @@ bool RotatingTriangle::handleEvent(const SDL_Event& event)
 Rect RotatingTriangle::boundingRect() const
 {
 	Rect r;
-	r.origin = Game::screenToWorldCoord(Point(state.x - SIZE, state.y - SIZE));
-	r.size = Vector(2 * SIZE, 2 * SIZE);
+	r.origin = Point(0, 0);
+	r.size = Game::worldSize();
 	return r;
 }
