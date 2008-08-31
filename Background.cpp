@@ -20,8 +20,11 @@ void Background::render(uint64_t frames)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glBindTexture(GL_TEXTURE_2D, mTexture->name());
 	
-	Point t1 = Point(topleft.x / Game::worldSize().width, topleft.y / Game::worldSize().height);
-	Point t2 = t1 + Point(mClipSize.x / mTexture->size().width, mClipSize.y / mTexture->size().height);
+	Point t1 = Point(
+		(topleft.x / Game::worldSize().width) * ((mTexture->size().width - mClipSize.width) / mTexture->size().width),
+		(topleft.y / Game::worldSize().height) * ((mTexture->size().height - mClipSize.height) / mTexture->size().height)
+	);
+	Point t2 = t1 + Point(mClipSize.width / mTexture->size().width, mClipSize.height / mTexture->size().height);
 	
 	glBegin(GL_QUADS);
 	{
