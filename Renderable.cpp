@@ -35,8 +35,7 @@ Renderable::~Renderable()
 	{
 		if (*iter == this)
 		{
-			renderables.erase(iter);
-			break;
+			iter = renderables.erase(iter);
 		}
 	}
 }

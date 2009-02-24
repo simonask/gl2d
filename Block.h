@@ -2,22 +2,23 @@
 #define _BLOCK_H_
 
 #include "Renderable.h"
+#include "BoxCollider.h"
 #include "Texture.h"
 #include "Point.h"
 #include "Color.h"
 #include "Rect.h"
 
-class Block : public Renderable
+class Block : public Renderable, public BoxCollider
 {
 private:
 	Color mColor;
 	Texture* mTexture;
-	Rect mRect;
-	Degrees mRotation;
 public:
 	Block(const Rect& rect, Degrees rotation = 0.0);
 	
 	virtual void render(uint64_t frame);
+	virtual void debugRender(uint64_t frame);
+	virtual Rect boundingRect() const;
 	
 	Color color() const { return mColor; }
 	void setColor(const Color& col) { mColor = col; }
@@ -28,7 +29,6 @@ public:
 	inline void setRotation(const Degrees rot) { mRotation = rot; }
 	Rect rect() const { return mRect; }
 	void setRect(const Rect& r) { mRect = r; }
-	Rect boundingRect() const;
 	
 	bool contains(const Point& p) const;
 };

@@ -6,8 +6,7 @@ using namespace std;
 Block::Block(const Rect& rect, Degrees rotation) :
 	mColor(1.0, 1.0, 1.0, 1.0),
 	mTexture(NULL),
-	mRect(rect),
-	mRotation(rotation)
+	BoxCollider(rect, rotation)
 {
 	
 }
@@ -60,6 +59,11 @@ void Block::render(uint64_t frame)
 	}
 }
 
+void Block::debugRender(uint64_t frame)
+{
+	render(frame);
+}
+
 Rect Block::boundingRect() const
 {
 	// Suboptimal, but it'll do.
@@ -68,19 +72,6 @@ Rect Block::boundingRect() const
 	r.origin = mRect.origin - Point(max, max);
 	r.size = Vector(2*max, 2*max);
 	return r;
-}
-
-static void print_matrix(double* m)
-{
-	for (size_t i = 0; i < 4; ++i)
-	{
-		for (size_t j = 0; j < 4; ++j)
-		{
-			printf("%.2f  ", m[i * 4 + j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
 }
 
 bool Block::contains(const Point& p) const

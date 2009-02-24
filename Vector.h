@@ -10,11 +10,11 @@ struct VectorT : public PointT<T>
 	VectorT<T>(T x, T y) : PointT<T>(x, y) {}
 	VectorT<T>(const PointT<T>& vec) : PointT<T>(vec) {}
 	
-	double length() const { return sqrt(this->x*this->x + this->y*this->y); }
+	T length() const { return (T)sqrt(this->x*this->x + this->y*this->y); }
 	
 	VectorT<T> normalize() const
 	{
-		double l = length();
+		T l = length();
 		return VectorT<T>(this->x / l, this->y / l);
 	}
 	

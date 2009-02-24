@@ -7,6 +7,7 @@
 #include "Streamy.h"
 #include "Background.h"
 #include "Navigator.h"
+#include "Script.h"
 
 #include <iostream>
 
@@ -304,11 +305,22 @@ int Game::run(int argc, char* argv[])
 	
 	glEnable(GL_MULTISAMPLE_ARB);
 	
+	/* INIT JS */
+	v8::HandleScope handle_scope;
+	v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
+	Script::initializeGlobalTemplate(global);
+	v8::Persistent<v8::Context> context = v8::Context::New(NULL, global);
+	v8::Context::Scope context_scope(context);
+	Script::setContext(context);
+	
+	Script::load("main.js");
+	
+	
 	/* ALL CLEAR -- START HAVING FUN */
 	Background bg;
 	bg.setZIndex(-100.0);
 	bg.setTexture(Texture::fromFile("heineken.jpg"));
-	bg.setClipSize(Vector(400, 400));
+	bg.setClipSize(Vector(600, 400));
 	
 	
 	triangle = new RotatingTriangle;
@@ -320,9 +332,13 @@ int Game::run(int argc, char* argv[])
 	b1->setTexture(tex);
 	Block* b2 = new Block(Rect(200, 200, 100, 20), 15);
 	
+	Block* simon = new Block(Rect(1000, 500, 800, 800), 80);
+	simon->setTexture(Texture::fromFile("foto.jpg"));
+	
 	YinYang* yy = new YinYang(Point(500, 500), 24);
 	
 	Navigator nav;
+	nav.setZIndex(100);
 	nav.setHeight(100);
 	
 	/* GAME LOOP */
@@ -331,6 +347,16 @@ int Game::run(int argc, char* argv[])
 		int now = SDL_GetTicks();
 		
 		handleEvents();
+		
+		if (b1->contains(mMousePosition))
+		{
+			b1->setTexture(NULL);
+		}
+		else
+		{
+			b1->setTexture(tex);
+		}
+		
 		update();
 		render();
 				
@@ -350,6 +376,8 @@ int Game::run(int argc, char* argv[])
 	delete tex;
 	delete b1;
 	delete b2;
+	
+	context.Dispose();
 	
 	SDL_Quit();
 	

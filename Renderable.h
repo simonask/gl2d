@@ -37,14 +37,6 @@ public:
 	virtual void render(uint64_t frame) = 0;
 	
 	/*
-		Return a rectangle that is guaranteed to contain this object. This
-		is used to determine whether or not the object should be allowed to
-		perform rendering, so it is important that draw() does not perform
-		rendering outside this rectangle.
-	*/
-	virtual Rect boundingRect() const = 0;
-	
-	/*
 		Optional. This is called exactly once for all objects on screen. Use this
 		to implement animation and whatever you may like.
 		
@@ -52,6 +44,14 @@ public:
 		thus, whether it should be updated.
 	*/
 	virtual void update() {}
+	
+	/*
+		Return a rectangle that is guaranteed to contain this object. This
+		is used to determine whether or not the object should be allowed to
+		perform rendering, so it is important that draw() does not perform
+		rendering outside this rectangle.
+	*/
+	virtual Rect boundingRect() const = 0;
 	
 	inline int layer() const { return mLayer; }
 	inline void setLayer(int l) { mLayer = l; }
